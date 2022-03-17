@@ -33,6 +33,7 @@ public class JdbcTest {
     }
     insertRow();
     deleteRow();
+    updateRow();
   }
 
 
@@ -88,6 +89,31 @@ public class JdbcTest {
     }catch (SQLException e){
       System.out.println("Could not delete");
       e.printStackTrace();
+    }
+
+  }
+
+  public static void updateRow(){
+    Scanner input = new Scanner(System.in);
+    final String UPDATE_QUERY = "UPDATE product SET name = ?, price = ? WHERE id = ?";
+    System.out.println("Enter ID you want to update: ");
+    int id = Integer.parseInt(input.nextLine());
+    System.out.println("Enter new Name");
+    String name = input.nextLine();
+    System.out.println("Enter new Price");
+    int price = Integer.parseInt(input.nextLine());
+    getConnection();
+
+    try{
+      PreparedStatement preparedStatementUpdateRow = getConnection().prepareStatement(UPDATE_QUERY);
+      preparedStatementUpdateRow.setString(1,name);
+      preparedStatementUpdateRow.setInt(2,price);
+      preparedStatementUpdateRow.setInt(3,id);
+      preparedStatementUpdateRow.executeUpdate();
+      System.out.println("Row with ID," + "#"+id+" Is updated");
+
+    }catch (SQLException e){
+      System.out.println(e);
     }
 
   }
