@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class JdbcTest {
   private final static String DB_URL = "jdbc:mysql://localhost:3306/webshop";
@@ -30,7 +31,35 @@ public class JdbcTest {
       System.out.println(e);
       e.printStackTrace();
     }
+    insertRow();
   }
+
+
+  public static void insertRow(){
+    Scanner input = new Scanner(System.in);
+    final String INSERT_SQL = "INSERT INTO product(name, price) VALUES (?, ?)";
+    getConnection();
+    try {
+      PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_SQL);
+      System.out.print("Enter Name: ");
+      String nameInput = input.nextLine();
+      System.out.print("Enter Price: ");
+      int priceInput = input.nextInt();
+      // Sætter name ind i tabellen
+      preparedStatement.setString(1,nameInput);
+      //Sætter tallet ind i tabellen
+      preparedStatement.setInt(2,priceInput);
+
+      preparedStatement.executeUpdate();
+
+      System.out.println("Product inserted: " + "Name: " + nameInput+", " + "Price: " + priceInput);
+
+
+    }catch (SQLException e){
+      System.out.println(e);
+    }
+  }
+
   public static Connection getConnection(){
     Connection connection = null;
     try{
