@@ -32,6 +32,7 @@ public class JdbcTest {
       e.printStackTrace();
     }
     insertRow();
+    deleteRow();
   }
 
 
@@ -70,4 +71,25 @@ public class JdbcTest {
     }
     return connection;
   }
+
+  public static void deleteRow(){
+    final String DELETE_QUERY = "DELETE FROM product WHERE id=?";
+    Scanner input = new Scanner(System.in);
+    getConnection();
+    System.out.println("Enter ID to be deleted");
+    int id = input.nextInt();
+
+    try{
+      PreparedStatement preparedStatementDelete = getConnection().prepareStatement(DELETE_QUERY);
+      preparedStatementDelete.setInt(1,id);
+      preparedStatementDelete.executeUpdate();
+      System.out.println("Row with ID: " + "#"+ id + " " +"Is now deleted");
+
+    }catch (SQLException e){
+      System.out.println("Could not delete");
+      e.printStackTrace();
+    }
+
+  }
+
 }
